@@ -263,7 +263,7 @@ Note: this section is prong to changes. We will make our best effort to inform y
 - `"choices"` -> `list<str>` : a **ordered** list of choices, each choice is a string that can include HTML or basic Latex formatting.
 - `"answers"` -> (`list<int>` | `int`) : if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"choices"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
 - `"images"` -> `list<obj>` : since we want to output everything to JSON, that includes images. We're using a list because JSON does not guarantee ordering of `(key, value)` pairs inside it's objects, and you might want your images ordered; luckily, it does preserve array/list ordering.
-  - `"<img title>"` -> `str` : each image object only needs 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, pleaese **only encode PNG images!**
+  - `"<img title>"` -> `str` : each image object only needs 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, please **only encode PNG images!**
 
 Term clarifications:
 
@@ -272,3 +272,39 @@ Term clarifications:
 
 #### JSON Output Example
 
+Below is an artificial example of a JSON output to give you a better idea of what the output might look like:
+
+```json
+{
+    "questions": [
+        { // first question
+            "prompt":"<p>what is $$1 + 1$$?</p>",
+            "choices": [
+                "<h3>equals to 2</h3>", "<h3>equals to 0</h3>", "<h3>equals to 1</h3>"
+            ],
+            "answers": 0
+        },
+        { // second question
+            "prompt":"<p>Who's the best Professor?</p>",
+            "choices": [
+                "Dan", "Denero", "Hug", "Hilfinger"
+            ],
+            "answers": [0, 1, 2, 3]
+        },
+        { // third question
+            "prompt":"Corporate needs you to the find differences between these 2 pictures.",
+            "choices": [
+                "image 1", "image 2"
+            ],
+            "answers": 1,
+            "images": [
+                {
+                    "first image": "<encoded PNG image string>",
+                    "second image": "<encoded PNG image string>"
+                }
+            ]
+        }
+    ]
+}
+
+```
