@@ -267,7 +267,7 @@ Note: this section is prong to changes. We will make our best effort to inform y
 
 Term clarifications:
 
-- "basic Latex": anything you can enclose using double `$$`. Since `$` also means "dollar", you must to enclose your mathmatically expression with double `$$`. E.g. `$$\frac{dx}{dy} = \sum_{i=1}^n (3x^2 + 2x) \cdot x$$`
+- "basic Latex": anything you can enclose using double `$$`. Since `$` also means "dollar", you must to enclose your mathematically expression with double `$$`. E.g. `$$\frac{dx}{dy} = \sum_{i=1}^n (3x^2 + 2x) \cdot x$$`
 - "JSON object": a JSON object looks very much like a python dictionary, but all key, value is represented as strings.
 
 #### JSON Output Example
