@@ -21,7 +21,7 @@ A general reference guide for creating exam generation projects
     - [README Markdown File](#readme-markdown-file)
     - [Assets](#assets)
   - [Program Arguments](#program-arguments)
-    - [Flags](#flags)
+    - [Arguments and Flags](#arguments-and-flags)
     - [Configuration File](#configuration-file)
   - [Output Rules](#output-rules)
     - [JSON Output Format](#json-output-format)
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 Having the `__main__.py` clearly defines your program entry point. As a result, your program, e.g. `midterm-q1` is directly callable like:
 
 ```shell
-python3 midterm-q1
+python3 midterm-q1 <arguments>
 ```
 
 This way, future maintainers do not even need to open up your code and dig through project directory in order to use your code. To make your code more programmer-friendly, checkout [Flags](#flags).
@@ -181,7 +181,7 @@ As a side note: we encourage you to write manuals like these and upload them to 
 
 ### Assets
 
-As a side note, if your project is rather complex and requires various data types, or even caches. It is recommended that you place your `packages/` directory ([above](#packages)) along with `docs/` directory ([above](#docs)) under a directory called `assets/`, this way, you don't clutter your top directory with all kinds of stuff. For example, if you have pre-prepared images, your `assets/` directory might look like:
+As a side note, if your project is rather complex and requires various data types, or even caches. It is recommended that you place your `packages/` directory ([above](#packages)) along with `docs/` directory ([above](#docs)) under a directory called `assets/`, this way, you don't clutter your top level directory with all kinds of stuff. For example, if you have pre-prepared images, your `assets/` directory might look like:
 
 ```shell
 assets/
@@ -193,9 +193,23 @@ assets/
 
 ## Program Arguments
 
-### Flags
+Many programs take arguments to let users interact with the program in many different ways, and your program should too.
+
+Some common ways to pass arguments to your program involve flags and configuration files. Below points have outlined both.
+
+### Arguments and Flags
+
+Flags refer to those dash (`-`) and english letter options you can pass to your program at startup. One example is your everyday `ls` like: `ls -a -l` or `ls -al` . In this example, `-a` and `-l` are flags that enable formatting of your `ls` program outputs. Arguments are those you can specify values instead of just turning something ON or OFF, like: `gcc -o example example.c` in this example, `-o` is the option, and `example` is the value.
+
+You can make your program more dynamic and configurable through the use of arguments and flags.
+
+To parse these arguments, python has a handful of standard libraries with nice APIs that you can import. One recommended parser is `argparse` and you can check it out here: (<https://docs.python.org/3/library/argparse.html>). It requires a bit of additional reading, but learning this will make your life much easier in the future. Additionally, many languages have powerful, built-in general purpose parsers like this one, learning one will make it easier to learn other parser in the future.
+
+As a side note: it is worth the time to populate the description fields, as well as additional usage text so that when a user does `python3 <program name> -h` the help message might be enough to get the user started, instead of having to read through `README` on Github.
 
 ### Configuration File
+
+
 
 ## Output Rules
 
