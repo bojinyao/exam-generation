@@ -296,7 +296,7 @@ Below is an artificial example of a JSON output to give you a better idea of wha
             "choices": [
                 "image 1", "image 2"
             ],
-            "answers": 1,
+            "answers": [1],
             "images": [
                 {
                     "first image": "<encoded PNG image string>",
