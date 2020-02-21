@@ -279,7 +279,7 @@ Below is an artificial example of a JSON output to give you a better idea of wha
 {
     "questions": [
         {
-            "prompt":"<p>what is $$1 + 1$$?</p>",
+            "prompt":"<b>what is $$1 + 1$$?</b>",
             "choices": [
                 "<b>equals to 2</b>", "<b>equals to 0</b>", "<b>equals to 1</b>"
             ],
