@@ -23,6 +23,7 @@ A general reference guide for creating exam generation projects
   - [Program Arguments](#program-arguments)
     - [Arguments and Flags](#arguments-and-flags)
     - [Configuration File](#configuration-file)
+    - [Default Argument(s)](#default-arguments)
   - [Output Rules](#output-rules)
     - [JSON Output Format](#json-output-format)
 
@@ -34,7 +35,7 @@ A general reference guide for creating exam generation projects
 
 For all projects, we are going to default to `python 3.6.0` and above. If you do not have the up-to-date python version, you can update your python using homebrew (<https://brew.sh/>) or through Anaconda (<https://www.anaconda.com/>).
 
-Note: it is recommended to get your python through homebrew because it will be placed directly in your `/usr/local/bin/` directory, for Mac systems, which will not cause trouble when your MacOS is updated.
+Note: it is recommended to get your python through homebrew because it will be placed directly in your `/usr/local/bin/` directory, for Mac systems, which will not cause trouble when your OS is updated.
 
 To check what python version you have, you can do:
 
@@ -42,7 +43,7 @@ To check what python version you have, you can do:
 python3 --version
 ```
 
-if you're not sure if you have python3 installed, do:
+if you're not sure if you have python3 installed, also try:
 
 ```shell
 python --version
@@ -54,7 +55,7 @@ There is no strict restriction on other software to stay compatible with everyon
 
 ## Project Structure
 
-Since this project is written by students, we need to anticipate real events such as graduation, that would result in the loss of the code creator. As such, we're choosing possibly the easiest way to keep everyone's code relevant, with nearly zero maintenance, that will ensure the survival of each individual's work in case of any unexpected leave. Consequently, this will hopefully ensure the longevity of the overall endeavor. The way we're going to organize everyone's project is through python modules ([below](#python-modules))
+Since this project is written by students, we need to anticipate real events such as graduation, that would result in the loss of the code creator. As such, we're choosing possibly the easiest way to keep everyone's code relevant, with nearly zero maintenance, that will ensure the survival of each individual's work in case of any unexpected leave. Consequently, this will hopefully ensure the longevity of the overall endeavor. We're going to organize everyone's project through python modules ([below](#python-modules))
 
 ### Python Modules
 
@@ -119,7 +120,7 @@ Having the `__main__.py` clearly defines your program entry point. As a result, 
 python3 midterm-q1 <arguments>
 ```
 
-This way, future maintainers do not even need to open up your code and dig through project directory in order to use your code. To make your code more programmer-friendly, checkout [Flags](#flags).
+This way, future maintainers do not even need to open up your code and dig through project directory in order to use your code. To make your code more programmer-friendly, checkout [Program Arguments](#program-arguments).
 
 #### Optional
 
@@ -175,7 +176,7 @@ If you haven't seen files like this, or haven't used markdown before, no worries
 
 **Your `README.md` should explain how to interact with your program!**
 
-Consider your `README.md` as a user manual for your program. It should include all essential commands, flags and options that your program consumes. It is okay to leave out the nitty-gritty details that's not essential to using your program to directories like `docs/` ([above](#docs)).
+Consider your `README.md` as a user manual for your program. It should include all essential commands, flags and options that your program consumes. It is okay to leave out the nitty-gritty details that's not essential to using your program to directories like `docs/` ([above](#docs)). However, it is very important that your `README.md` covers everything from [Program Arguments](#program-arguments) that you did implement, including [default arguments](#default-arguments)!
 
 As a side note: we encourage you to write manuals like these and upload them to Github; instead of writing them in Google Doc for example. Reason being the ease of maintenance and version control. If you create a document like this and wish to share with others, what access privilege do you give others? If you do view only, what happens if someone updates your program and need to update the manual itself? If you do writable, what happens if someone accidentally deletes important content without realizing or anyone knowing? And linking Google Docs as manual is especially dangerous, consider if you graduate and you delete your Google Drive, the link to your user manual will be invalid, and no one will be able to use your program 🙁
 
@@ -209,7 +210,17 @@ As a side note: it is worth the time to populate the description fields, as well
 
 ### Configuration File
 
+Very often, your program might be able to consume so many different configuration options, where some options might have hierarchies, it'd be easier to also accept configuration file to configure your program. For the purpose of this project, we're asking everyone to use JSON (javascript object notation) format files for your configuration file. We understand JSON might not be your top choice for configuration file; however, JSON is easy to understand and readable, and we're also using the same format for program outputs (see [Output Rules](#output-rules)), it will be easier for others to adopt and start using your program sooner.
 
+To add configuration file option, you can use an `argparse` as described [above](#arguments-and-flags) to automatically and safely find the figuration file using a path, then open it.
+
+Additionally, if you do have configuration file, you should outline what the options are, what they do, and how they affect the program output **clearly** in your `README.md` file.
+
+### Default Argument(s)
+
+To make your program more user friendly, you should consider default arguments. Very often, a user simply wants to start using the program without reading through configuration rules. As a result, you should put some thoughts into what the default values should be for your configurations. This will also be helpful if someone decides to not pass any arguments, or giving your program an empty configuration file, **your program should not crash if no configuration is given.**
+
+One of the ways to organize your configuration options is through a python dictionary or even a class. When you receive configuration(s), simply update corresponding `(key, value)` pairs. This way, default values should seem more natural and intuitive. Additionally, you will be able to pass this configuration to other classes or functions freely and succinctly.
 
 ## Output Rules
 
