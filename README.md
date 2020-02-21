@@ -259,7 +259,7 @@ import json
 Note: this section is prong to changes. We will make our best effort to inform you of any changes, and we will try our best to only add changes instead of modifying past decisions to reduce your code change.
 
 - `"questions"` -> `list<obj>` : your program should be capable of generating more than 1 question at a time. Each question is represented as a JSON object, and all your questions are placed inside a list. Even if you only generate 1 question at a time, you should still place it inside a list.
-- `"prompt"` -> `str` : the prompt of your question. You can add HTML formatting if you need to, we also support basic LaTex syntax.
+- `"prompt"` -> `str` : the prompt of your question. You can add HTML formatting if you need to, we also support basic LaTex syntax. With HTML formatting, it is not recommended to have size related tags because it is a breach in abstraction. However, feel free to use `<strong>`, `<em>`, etc. tags.
 - `"choices"` -> `list<str>` : a **ordered** list of choices, each choice is a string that can include HTML or basic Latex formatting.
 - `"answers"` -> (`list<int>` | `int`) : if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"choices"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
 - `"images"` -> `list<obj>` : since we want to output everything to JSON, that includes images. We're using a list because JSON does not guarantee ordering of `(key, value)` pairs inside it's objects, and you might want your images ordered; luckily, it does preserve array/list ordering.
@@ -281,12 +281,12 @@ Below is an artificial example of a JSON output to give you a better idea of wha
         {
             "prompt":"<p>what is $$1 + 1$$?</p>",
             "choices": [
-                "<h3>equals to 2</h3>", "<h3>equals to 0</h3>", "<h3>equals to 1</h3>"
+                "<b>equals to 2</b>", "<b>equals to 0</b>", "<b>equals to 1</b>"
             ],
             "answers": 0
         },
         {
-            "prompt":"<p>Who's the best Professor?</p>",
+            "prompt":"<em>Who's the best Professor?</em>",
             "choices": [
                 "Dan", "Denero", "Hug", "Hilfinger"
             ],
