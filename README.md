@@ -18,7 +18,8 @@ A general reference guide for creating exam generation projects
     - [Packages](#packages)
     - [Docs](#docs)
     - [README Markdown File](#readme-markdown-file)
-  - [Project Arguments](#project-arguments)
+    - [Assets](#assets)
+  - [Program Arguments](#program-arguments)
     - [Flags](#flags)
     - [Configuration File](#configuration-file)
   - [Output Rules](#output-rules)
@@ -83,6 +84,7 @@ midterm-q1/
             packages/       # checkout #Packages
             docs/           # checkout #Docs
             .git            # created by git
+            .gitignore      # you might need to create one
 ```
 
 And inside your `__main__.py`, the code might look like:
@@ -149,14 +151,29 @@ doing this will give execution privileges to anyone with a copy of your file, an
 
 without calling `python3` for example.
 
-
 ### Packages
+
+It is highly recommended that you search for existing libraries or packages that will solve your problem instead of reinventing every wheel. As a result, you might need to download some libraries that are not part of the standard python libraries.
+
+When you do need to download packages, please put them inside a directory called `packages/`. This makes it easy for future maintainers to understand what code is downloaded, and they can perform updates if necessary. The downloaded packages will also enable your program to run off-line, and be resistant package updates, for our purposes, this should be the most logic option.
 
 ### Docs
 
 ### README Markdown File
 
-## Project Arguments
+### Assets
+
+As a side note, if your project is rather complex and requires various data types, or even caches. It is recommended that you place your `packages/` directory ([above](#packages)) along with `docs/` directory ([above](#docs)) under a directory called `assets/`, this way, you don't clutter your top directory with all kinds of stuff. For example, if you have pre-prepared images, your `assets/` directory might look like:
+
+```shell
+assets/
+            packages/
+            docs/
+            images/
+            miscellaneous/
+```
+
+## Program Arguments
 
 ### Flags
 
