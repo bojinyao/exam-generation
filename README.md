@@ -12,6 +12,7 @@ A general reference guide for creating exam generation projects
   - [Project Structure](#project-structure)
     - [Python Modules](#python-modules)
       - [Python Modules Quick Tutorial](#python-modules-quick-tutorial)
+        - [project directory](#project-directory)
       - [Optional](#optional)
         - [Step 1](#step-1)
         - [Step 2](#step-2)
@@ -74,13 +75,16 @@ if __name__ == "__main__":
 
 Lastly, you will need to place the main logic (entry point) within a function called `main()` somewhere above the code block.
 
-Your project structure might look like:
+##### project directory
+
+Your project directory might look like:
 
 ```shell
 midterm-q1/
             __init__.py
             some_stuff.py
             __main__.py
+            README.md       # your README
             packages/       # checkout #Packages
             docs/           # checkout #Docs
             .git            # created by git
@@ -155,11 +159,25 @@ without calling `python3` for example.
 
 It is highly recommended that you search for existing libraries or packages that will solve your problem instead of reinventing every wheel. As a result, you might need to download some libraries that are not part of the standard python libraries.
 
-When you do need to download packages, please put them inside a directory called `packages/`. This makes it easy for future maintainers to understand what code is downloaded, and they can perform updates if necessary. The downloaded packages will also enable your program to run off-line, and be resistant package updates, for our purposes, this should be the most logic option.
+When you do need to download packages, please put them inside a directory called `packages/`. This makes it easy for future maintainers to understand what code is downloaded, and they can perform updates if necessary. The downloaded packages will also enable your program to run off-line, and be resistant to package updates.
 
 ### Docs
 
+Since this project is very distributed in personnel that consist of students, good documentation is key to enable others to properly use your program. For large programs, you might have multiple documentation files for different sections of your code, you should place these documentation files within a directory called `docs/` for easy future access.
+
+Note: your `README.md` that is meant to explain your program should still be at the top level of your project directory (see [project directory](#project-directory)). Files within `docs/` are files like `help.txt`, `direction.txt`, etc.
+
 ### README Markdown File
+
+You should write and actively maintain a file called `README.md` that appears at the front page of your github repository. Besides introducing your program, what it is, what it does, etc.
+
+If you haven't seen files like this, or haven't used markdown before, no worries, it is not difficult to learn. For a quick summary, `README` is basically a file that a user to a program should read before proceeding to using the program. If you write your `README` in markdown, Github will automatically render it at the front page of your repository for others to see. And markdown is a simple popular markup language that lots of people have written tutorials and cheatsheets on. For example, the following link (<https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet>) is one of those cheatsheets.
+
+**Your `README.md` should explain how to interact with your program!**
+
+Consider your `README.md` as a user manual for your program. It should include all essential commands, flags and options that your program consumes. It is okay to leave out the nitty-gritty details that's not essential to using your program to directories like `docs/` ([above](#docs)).
+
+As a side note: we encourage you to write manuals like these and upload them to Github; instead of writing them in Google Doc for example. Reason being the ease of maintenance and version control. If you create a document like this and wish to share with others, what access privilege do you give others? If you do view only, what happens if someone updates your program and need to update the manual itself? If you do writable, what happens if someone accidentally deletes important content without realizing or anyone knowing? And linking Google Docs as manual is especially dangerous, consider if you graduate and you delete your Google Drive, the link to your user manual will be invalid, and no one will be able to use your program 🙁
 
 ### Assets
 
