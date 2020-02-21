@@ -65,7 +65,7 @@ In summary, python modules is the go-to for building large python projects. As t
 
 #### Python Modules Quick Tutorial
 
-Let's say you're working on a project inside `midterm-q1/` directory, and you'd like to convert your project into a python module. There are a few things you need to do. 
+Let's say you're working on a project inside `midterm-q1/` directory, and you'd like to convert your project into a python module. There are a few things you need to do.
 
 First of all, create an empty file called `__init__.py` at the top level of your directory. This file tells the python interpreter that this directory is meant to be a python module. For an additional functionality, please place your main script inside another file called `__main__.py`, and within your `__main__.py`, at the very bottom of the file, place the following block of code:
 
@@ -178,6 +178,8 @@ If you haven't seen files like this, or haven't used markdown before, no worries
 
 Consider your `README.md` as a user manual for your program. It should include all essential commands, flags and options that your program consumes. It is okay to leave out the nitty-gritty details that's not essential to using your program to directories like `docs/` ([above](#docs)). However, it is very important that your `README.md` covers everything from [Program Arguments](#program-arguments) that you did implement, including [default arguments](#default-arguments)!
 
+If you have custom outputs, checkout [output rules](#output-rules), you should include these in the `README.md` as well. And if necessary, notify the group that works on parsing outputs so that your custom output will be integrated.
+
 As a side note: we encourage you to write manuals like these and upload them to Github; instead of writing them in Google Doc for example. Reason being the ease of maintenance and version control. If you create a document like this and wish to share with others, what access privilege do you give others? If you do view only, what happens if someone updates your program and need to update the manual itself? If you do writable, what happens if someone accidentally deletes important content without realizing or anyone knowing? And linking Google Docs as manual is especially dangerous, consider if you graduate and you delete your Google Drive, the link to your user manual will be invalid, and no one will be able to use your program 🙁
 
 ### Assets
@@ -223,5 +225,32 @@ To make your program more user friendly, you should consider default arguments. 
 One of the ways to organize your configuration options is through a python dictionary or even a class. When you receive configuration(s), simply update corresponding `(key, value)` pairs. This way, default values should seem more natural and intuitive. Additionally, you will be able to pass this configuration to other classes or functions freely and succinctly.
 
 ## Output Rules
+
+To make your life easier, while creating a good abstraction barrier, we're going to ask you to create JSON outputs.
+
+Why JSON outputs?
+
+- JSON is a widely used and accepted form of output, many languages and systems and built-in support.
+- If everyone writes their output as a JSON object, with some standardization, we can create one parser, that consumes every program's JSON output, and format nicely to HTML. This way, you don't have to deal with HTML, CSS, or JS formatting, and you don't have to do any work if some backend API changes.
+
+---
+
+**Information from here on is SUPER important! Make sure you understand what you're reading, and ask questions if anything is confusing to you!**
+
+How to do JSON outputs?
+
+Use python's default json library! Here are documentations and tutorial on how to use this library: (<https://docs.python.org/3/library/json.html>), (<https://www.w3schools.com/python/python_json.asp>)
+
+```python
+import json
+```
+
+- use `json.loads()` and `json.dumps()` to decode and encode your JSON objects. You can also use `json.load()` or `json.dump()` if you know what you're doing. You likely will not need to use `json.loads()` or `json.load()` since your program likely won't need to consume JSON.
+- output your JSON to standard out *by default* ! Normally, you can just call `print(...)`.
+  - you can output directly to some json file, like `output.json`, but this should only be enabled by argument or flag! Even then, your argument should take in a path, rather than simply writing to where the program is called <-- if this doesn't make sense to you, ask!
+  - the idea behind this is to give called program the right to name and decide on where and how to create the output file(s).
+  - it is very easy for the calling program to capture/redirect your program's standard out.
+
+>Note Keys in key/value pairs of JSON are always of the type `str`. When a dictionary is converted into JSON, all the keys of the dictionary are coerced to strings. As a result of this, if a dictionary is converted into JSON and then back into a dictionary, the dictionary may not equal the original one. That is, `loads(dumps(x)) != x` if `x` has non-string keys.
 
 ### JSON Output Format
