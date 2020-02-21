@@ -263,7 +263,8 @@ Note: this section is prong to changes. We will make our best effort to inform y
 - `"choices"` -> `list<str>` : a **ordered** list of choices, each choice is a string that can include HTML or basic Latex formatting.
 - `"answers"` -> (`list<int>` | `int`) : if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"choices"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
 - `"images"` -> `list<obj>` : since we want to output everything to JSON, that includes images. We're using a list because JSON does not guarantee ordering of `(key, value)` pairs inside it's objects, and you might want your images ordered; luckily, it does preserve array/list ordering.
-  - `"<img title>"` -> `str` : each image object only needs 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, please **only encode PNG images!**
+  - `"<img title>"` -> `str` : each image object only requires 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, **default encoding will be PNG images!**
+  - `"type"` -> `str` : for display purposes, the calling program might need to know the type of image you have. If you have something other than PNG, you should add the image type extension here, without the dot.
 
 Term clarifications:
 
@@ -299,8 +300,11 @@ Below is an artificial example of a JSON output to give you a better idea of wha
             "answers": [1],
             "images": [
                 {
-                    "first image": "<encoded PNG image string>",
-                    "second image": "<encoded PNG image string>"
+                    "first image": "<encoded PNG image string>"
+                },
+                {
+                    "type":"jpg",
+                    "second image": "<encoded JPG image string>",
                 }
             ]
         }
