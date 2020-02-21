@@ -277,21 +277,21 @@ Below is an artificial example of a JSON output to give you a better idea of wha
 ```json
 {
     "questions": [
-        { // first question
+        {
             "prompt":"<p>what is $$1 + 1$$?</p>",
             "choices": [
                 "<h3>equals to 2</h3>", "<h3>equals to 0</h3>", "<h3>equals to 1</h3>"
             ],
             "answers": 0
         },
-        { // second question
+        {
             "prompt":"<p>Who's the best Professor?</p>",
             "choices": [
                 "Dan", "Denero", "Hug", "Hilfinger"
             ],
             "answers": [0, 1, 2, 3]
         },
-        { // third question
+        {
             "prompt":"Corporate needs you to the find differences between these 2 pictures.",
             "choices": [
                 "image 1", "image 2"
