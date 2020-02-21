@@ -26,6 +26,7 @@ A general reference guide for creating exam generation projects
     - [Default Argument(s)](#default-arguments)
   - [Output Rules](#output-rules)
     - [JSON Output Format](#json-output-format)
+      - [JSON Output Example](#json-output-example)
 
 ## Software
 
@@ -254,3 +255,20 @@ import json
 >Note Keys in key/value pairs of JSON are always of the type `str`. When a dictionary is converted into JSON, all the keys of the dictionary are coerced to strings. As a result of this, if a dictionary is converted into JSON and then back into a dictionary, the dictionary may not equal the original one. That is, `loads(dumps(x)) != x` if `x` has non-string keys.
 
 ### JSON Output Format
+
+Note: this section is prong to changes. We will make our best effort to inform you of any changes, and we will try our best to only add changes instead of modifying past decisions to reduce your code change.
+
+- `"questions"` -> `list<obj>` : your program should be capable of generating more than 1 question at a time. Each question is represented as a JSON object, and all your questions are placed inside a list. Even if you only generate 1 question at a time, you should still place it inside a list.
+- `"prompt"` -> `str` : the prompt of your question. You can add HTML formatting if you need to, we also support basic LaTex syntax.
+- `"choices"` -> `list<str>` : a **ordered** list of choices, each choice is a string that can include HTML or basic Latex formatting.
+- `"answers"` -> (`list<int>` | `int`) : if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"choices"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
+- `"images"` -> `list<obj>` : since we want to output everything to JSON, that includes images. We're using a list because JSON does not guarantee ordering of `(key, value)` pairs inside it's objects, and you might want your images ordered; luckily, it does preserve array/list ordering.
+  - `"<img title>"` -> `str` : each image object only needs 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, pleaese **only encode PNG images!**
+
+Term clarifications:
+
+- "basic Latex": anything you can enclose using double `$$`. Since `$` also means "dollar", you must to enclose your mathmatically expression with double `$$`. E.g. `$$\frac{dx}{dy} = \sum_{i=1}^n (3x^2 + 2x) \cdot x$$`
+- "JSON object": a JSON object looks very much like a python dictionary, but all key, value is represented as strings.
+
+#### JSON Output Example
+
