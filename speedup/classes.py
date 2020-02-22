@@ -75,7 +75,7 @@ class speedUp:
                         questions.append(self.constructAQuestion(cur_answer, c, int(100/n)))
                         break
         return {
-            "questions" : questions
+            "multiple_choice" : questions
         }
 
 
