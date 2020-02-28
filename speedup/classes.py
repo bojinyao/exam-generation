@@ -1,38 +1,3 @@
-{
-    "questions": [
-        {
-            "prompt":"<b>what is $$1 + 1$$?</b>",
-            "choices": [
-                "<b>equals to 2</b>", "<b>equals to 0</b>", "<b>equals to 1</b>"
-            ],
-            "answers": 0
-        },
-        {
-            "prompt":"<em>Who's the best Professor?</em>",
-            "choices": [
-                "Dan", "Denero", "Hug", "Hilfinger"
-            ],
-            "answers": [0, 1, 2, 3]
-        },
-        {
-            "prompt":"Corporate needs you to the find differences between these 2 pictures.",
-            "choices": [
-                "image 1", "image 2"
-            ],
-            "answers": [1],
-            "images": [
-                {
-                    "first image": "<encoded PNG image string>"
-                },
-                {
-                    "type":"jpg",
-                    "second image": "<encoded JPG image string>",
-                }
-            ]
-        }
-    ]
-}
-
 import random
 
 class speedUp:
