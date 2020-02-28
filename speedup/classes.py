@@ -42,22 +42,3 @@ class speedUp:
         return {
             "multiple_choice" : questions
         }
-
-
-
-# Class to parse JSON input file
-# The updated config will be consumed by speedUp object
-class updateConfig:
-
-
-    def __init__(self, fp):
-        self.fp = fp
-
-
-# Class to turn speedUp object into JSON
-# that will be output
-class outputJSON:
-
-    def __init__(self, speedUp, fp):
-        self.speedUp = speedUp
-        self.fp = fp
