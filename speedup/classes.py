@@ -21,6 +21,10 @@ class speedUp:
             assert self.config["numbered_choice_count"] is None, 'Only 1 of "choice_numbers" and "numbered_choice_count" can be specified'
 
             choices = self.config["choice_numbers"][:]
+            for num in choices:
+                percentage = 100/num
+                if not int(percentage) == percentage:
+                    raise AssertionError(f'Inputted number: {num} does not result in integer percentage')
 
         elif self.config["numbered_choice_count"] is not None:
             count = self.config["numbered_choice_count"]
@@ -53,7 +57,6 @@ class speedUp:
             if type(c[cur_answer]) is int:
                 num = c[cur_answer]
                 percentage = 100/num
-                assert int(percentage) == percentage, f'Inputted number: {num} does not result in integer percentage'
                 questions.append(self.constructAQuestion(cur_answer, c, int(100/num)))
             else:
                 while True:
