@@ -23,8 +23,11 @@ def parse_arguments():
 
 # Equivalent to Main without the argparse
 def run(config):
-    s = speedUp(config)
-    print(json.dumps(s.constructQuestions(), indent=4))
+    try:
+        constructed = speedUp(config).constructQuestions()
+        print(json.dumps(constructed, indent=4))
+    except AssertionError as e:
+        printErr(e)
 
 # The main method
 def main():
@@ -44,8 +47,12 @@ def main():
             # Error goes to stderr
             printErr("Error parsing config file")
         
-    s = speedUp(config)
-    print(json.dumps(s.constructQuestions(), indent=4), file=args.outfile)
+    try:
+        constructed = speedUp(config).constructQuestions()
+        print(json.dumps(constructed, indent=4), file=args.outfile)
+    except AssertionError as e:
+        printErr(e)
+
 
 if __name__ == "__main__":
     main()
