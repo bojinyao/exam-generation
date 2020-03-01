@@ -6,12 +6,14 @@ A general reference guide for creating exam generation projects
 
 - [Exam Generation Design Guide](#exam-generation-design-guide)
   - [Table of Contents](#table-of-contents)
+  - [Change Log](#change-log)
   - [Software](#software)
     - [Main Software](#main-software)
     - [Other Software](#other-software)
   - [Project Structure](#project-structure)
     - [Python Modules](#python-modules)
       - [Python Modules Quick Tutorial](#python-modules-quick-tutorial)
+      - [run(config)](#runconfig)
         - [project directory](#project-directory)
       - [Optional](#optional)
         - [Step 1](#step-1)
@@ -27,6 +29,10 @@ A general reference guide for creating exam generation projects
   - [Output Rules](#output-rules)
     - [JSON Output Format](#json-output-format)
       - [JSON Output Example](#json-output-example)
+
+## Change Log
+
+[Change log in `docs/`](docs/changelog.md)
 
 ## Software
 
@@ -56,13 +62,13 @@ There is no strict restriction on other software to stay compatible with everyon
 
 ## Project Structure
 
-Since this project is written by students, we need to anticipate real events such as graduation, that would result in the loss of the code creator. As such, we're choosing possibly the easiest way to keep everyone's code relevant, with nearly zero maintenance, that will ensure the survival of each individual's work in case of any unexpected leave. Consequently, this will hopefully ensure the longevity of the overall endeavor. We're going to organize everyone's project through python modules ([below](#python-modules))
+Since this project is written by students, we need to anticipate real events such as graduation, that would result in the loss of the code creator. As such, we're choosing hopefully the easiest way to keep everyone's code relevant, with nearly zero maintenance, that will ensure the survival of each individual's work in case of any unexpected leave. Consequently, this will hopefully ensure the longevity of the overall endeavor. We're going to organize everyone's project through python modules ([below](#python-modules))
 
 ### Python Modules
 
 If you haven't heard of python modules please check it out real quick (<https://docs.python.org/3/tutorial/modules.html>).
 
-In summary, python modules is the go-to for building large python projects. As the name implies, we can modularize each individual's project and easily integrate everyone's code together when we need to. There are also some added benefits of flexibility, and general compatibility which might come in handy down the road.
+In summary, python modules is the go-to for building large python projects. As the name implies, we can modularize each individual's project and easily integrate everyone's code together when we need to. There are also some added benefits of flexibility, and general compatibility which might come in handy far down the road.
 
 #### Python Modules Quick Tutorial
 
@@ -72,10 +78,24 @@ First of all, create an empty file called `__init__.py` at the top level of your
 
 ```python
 if __name__ == "__main__":
-    main()
+    main(...)
 ```
 
 Lastly, you will need to place the main logic (entry point) within a function called `main()` somewhere above the code block.
+
+#### run(config)
+
+To provide a consistent API across all programs, you're required to define a python **function**, not method, with the signature `run(config : dict, *args, **kwargs)`, where the **only** required input parameter is a dictionary, and **only** a dictionary will be passed to it when called outside of `"__main__"`. You should place this **function** inside your `__main__.py`
+
+This function will be called by default if your python module is imported like a library, and **only** a dictionary of your program's configurations will be passed to it. Your program do not have to use this function in its operations, but when this function is called, the program should function the same way!
+
+- Why do we need this?
+  - Consider `run(dict)` as the default entry point for someone calling your program as if it's a library. In normal programs, there is the familiar `main()`; however, you might want to use `main()` for your regular logical processes, so we're defaulting to a second common entry point `run(...)`.
+  - Your `main()` might be doing some extra stuff like parsing command line options or printing to a console, importing and running `main()` will most likely crash the calling program too. As a result, with configurations (along will all other information your program possibly needs) as a single dictionary, `run(...)` function needs to execute without needing any additional inputs.
+
+Regardless of whether your program is configurable at all, you have to have this function as an alternative entry point. And in the case there is no configuration for your program, an empty dictionary will be passed to it, and your function don't need to use that input. This function is going to be integral to integrating your program as part of the larger project!
+
+Note: whenever you update `main()`, it is likely that you will need to update `run(...)` too, as a result, you either should be mindful of that fact, or simply use `run(...)` inside your `main()` as a good abstraction barrier that might also improve your code readability.
 
 ##### project directory
 
@@ -96,10 +116,15 @@ midterm-q1/
 And inside your `__main__.py`, the code might look like:
 
 ```python=1
-def main():
+def run(config, *args, **kwargs):
+    ...
+    outputJSON()
+
+def main(...):
     parseFlags()
     doSomeStuff()
-    outputJSON()
+    ...
+    run()
 
 def parseFlags():
     ...
@@ -111,11 +136,11 @@ def outputJSON():
     ...
 
 if __name__ == "__main__":
-    main()
+    main(...)
 
 ```
 
-Having the `__main__.py` clearly defines your program entry point. As a result, your program, e.g. `midterm-q1` is directly callable like:
+Having the `__main__.py`, clearly defines your program's entry point. As a result, your program, e.g. `midterm-q1` is directly callable like:
 
 ```shell
 python3 midterm-q1 <arguments>
@@ -197,6 +222,8 @@ assets/
 
 ## Program Arguments
 
+Note: this entire section is optional, although, highly recommended! If you have any global variable in your code, you should have this! And as you read through this section, you will likely need to introduce certain global variables anyways.
+
 Many programs take arguments to let users interact with the program in many different ways, and your program should too.
 
 Some common ways to pass arguments to your program involve flags and configuration files. Below points have outlined both.
@@ -259,12 +286,22 @@ import json
 Note: this section is prong to changes. We will make our best effort to inform you of any changes, and we will try our best to only add changes instead of modifying past decisions to reduce your code change.
 
 - `"multiple_choice"` -> `list<obj>` : your program should be capable of generating more than 1 question at a time. Each question is represented as a JSON object, and all your questions are placed inside a list. Even if you only generate 1 question at a time, you should still place it inside a list.
-- `"prompt"` -> `str` : the prompt of your question. You can add HTML formatting if you need to, we also support basic LaTex syntax. With HTML formatting, it is not recommended to have size related tags because it is a breach in abstraction. However, feel free to use `<strong>`, `<em>`, etc. tags.
-- `"choices"` -> `list<str>` : a **ordered** list of choices, each choice is a string that can include HTML or basic Latex formatting.
-- `"answers"` -> (`list<int>` | `int`) : if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"choices"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
+- `"prompt"` -> `str` : the prompt of your question. You can add HTML formatting if you need to, we also support basic LaTex syntax. With HTML formatting, it is not recommended to have size related tags because it is a breach in abstraction. However, feel free to use `<strong>`, `<em>`, etc. tags. If within the same JSON object, your `"options"` contains more JSON objects, this prompt will be treated as a prolog to other sub-questions, and consequently, you shouldn't have any other `(key, val)` pairs besides this `"prompt"` and `"options"`.
+- `"options"` -> `list<(str | obj)>` : a **ordered** list of either choice strings or JSON objects. Choice strings can include HTML or basic Latex formatting. JSON object can be another question, or something that has more `"options"` within a JSON object (this is recursive). You shouldn't have any other `(key, val)` pairs if this list contains JSON object(s).
+- `"answers"` -> (`list<int>` | `int`) || (`list<str>` | `str`): possible answers to your prompt.
+  - if your question type is `"multiple_choice"`, if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"options"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
+  - if your question type is `"fill_in_blanks"`, your `"answers"` should always be *regular expression* string! The regular expression string have to be **Ruby regular expressions** (<https://www.rubyguides.com/2015/06/ruby-regex/>). Similar to `"multiple_choice"`, if you have multiple `<input>`s, this should be a list of regular expression strings, where each regular expression string corresponds to each `<input>` in the same order. If you only have 1 `<input>`, it is okay to just use a single regular expression string.
 - `"images"` -> `list<obj>` : since we want to output everything to JSON, that includes images. We're using a list because JSON does not guarantee ordering of `(key, value)` pairs inside it's objects, and you might want your images ordered; luckily, it does preserve array/list ordering.
   - `"<img title>"` -> `str` : each image object only requires 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, **default encoding will be PNG images!**
   - `"type"` -> `str` : for display purposes, the calling program might need to know the type of image you have. If you have something other than PNG, you should add the image type extension here, without the dot.
+- `"hints"` -> `list<str>` : in the spirit of autoquiz, we need to be able to provide hint(s) if a student were to select the wrong question. Your program should output theses hints along with your answers.
+  - if your question type is `"multiple_choice"`, you should output a list (equal length to `"options"`) of strings. Your hint for this question type should be none-trivial (saying "not right" is not enough!), it should be helpful to the student. Please avoid long paragraphs for this one, a sentence or two is more than enough.
+    - if the question is "select the correct answer", each corresponding wrong answer should have a hint on why that choice is incorrect. You can simply say "correct", or an empty string, for the correct choice (this is more of a place holder for easier indexing).
+    - if the question is "select all that apply", if the choice should be selected, you should provide a hint for when the choice is NOT selected by a student; vice versa, if the choice should not be selected, you should provide a hint for when the choice IS selected by a student.
+  - if your question type is `"fill_in_blanks"`, you should still provide a **list** of string(s) as a hint, where each hint corresponds to each `<input>` that a student would've answered incorrectly. In the case of a single `<input>`, this list will be of length 1. A useful hint would require some thought because it needs to generalize to infinitely answer. However, please keep your hint as short as possible.
+- `"difficulty"` -> `int` : you should mark each question's difficulty on an integer scale of `1` - `5` (inclusive), where `1` being easiest, and `5` being most difficult.
+- `"fill_in_blanks"` -> `list<obj>` : questions of type "fill in the blank". You should use `<input>` for place(s) where a single input is required. And if needed, you can chain multiple `<input>`s together to denote multiple required inputs. For example, a question might look like: "Abstraction includes both `<input>` and `<input>`", and the answer would be "generalization" and "detail removal". Although, questions that have long, word based answers are difficult to auto-grade in general...
+- `<input>` : each one of these inside your `"prompt"` is considered a user input, basically a blank to be filled. You can any number of these within a single `"prompt"`, and each one is considered a single input.
 
 Term clarifications:
 
@@ -273,31 +310,76 @@ Term clarifications:
 
 #### JSON Output Example
 
+>If anything above or below seems confusing, or incorrect, you should message Max Yao directly on Slack
+
 Below is an artificial example of a JSON output to give you a better idea of what the output might look like:
 
 ```json
 {
     "multiple_choice": [
         {
-            "prompt":"<b>what is $$1 + 1$$?</b>",
-            "choices": [
-                "<b>equals to 2</b>", "<b>equals to 0</b>", "<b>equals to 1</b>"
-            ],
-            "answers": 0
+            "prompt": "The following questions are algebra questions",
+            "options": [
+                {
+                    "prompt":"<b>what</b> is $$1 + 1$$?",
+                    "options": [
+                        "equals to <b>2</b>",
+                        "equals to <b>0</b>",
+                        "equals to <b>1</b>"
+                    ],
+                    "hints": [
+                        "correct",
+                        "hint for if answer 0 is wrong",
+                        "hint for if answer 1 is wrong"
+                    ],
+                    "answers": 0,
+                    "difficulty": 1
+                },
+                {
+                    "prompt":"<b>what</b> is $$3 \\cdot 4$$?",
+                    "options": [
+                        "3",
+                        "4",
+                        "12"
+                    ],
+                    "hints": [
+                        "hint for if answer 3 is wrong",
+                        "hint for if answer 4 is wrong",
+                        "correct"
+                    ],
+                    "answers": 2,
+                    "difficulty": 4
+                }
+            ]
         },
         {
-            "prompt":"<em>Who's the best Professor?</em>",
-            "choices": [
-                "Dan", "Denero", "Hug", "Hilfinger"
+            "prompt":"<em>Who's the best</em> Professor?",
+            "options": [
+                "Dan",
+                "Denero",
+                "Hug",
+                "Hilfinger"
             ],
-            "answers": [0, 1, 2, 3]
+            "hints": [
+                "hint for if Dan is not selected",
+                "hint for if Denero is not selected",
+                "hint for if Hug is not selected",
+                "hint for if Hilfinger is not selected"
+            ],
+            "answers": [0, 1, 2, 3],
+            "difficulty": 5
         },
         {
             "prompt":"Corporate needs you to the find differences between these 2 pictures.",
-            "choices": [
-                "image 1", "image 2"
+            "options": [
+                "first image", "second image"
+            ],
+            "hints": [
+                "hint for if image 1 is not selected",
+                "hint for if image 2 is selected"
             ],
             "answers": [1],
+            "difficulty": 2,
             "images": [
                 {
                     "first image": "<encoded PNG image string>"
@@ -305,6 +387,53 @@ Below is an artificial example of a JSON output to give you a better idea of wha
                 {
                     "type":"jpg",
                     "second image": "<encoded JPG image string>",
+                }
+            ]
+        }
+    ],
+
+
+    "fill_in_blanks": [
+        {
+            "prompt": "Name a traffic light color: <input>",
+            "answers": "^(?i)(green|yellow|red)$",
+            "hints": ["A useful string when input #1 answer is wrong"],
+            "difficulty": 3
+        },
+        {
+            "prompt": "Let's do sub questions within each sub question",
+            "options": [
+                {
+                    "prompt": "This could be part a)",
+                    "options": [
+                        {
+                            "prompt": "This is part i. of part a) <input>, <input>",
+                            "answers": [
+                                "^[\\w]$",
+                                "\\d"
+                                ],
+                            "hints": [
+                                "A useful string when input #1 answer is wrong",
+                                "A useful string when input #2 answer is wrong"
+                            ],
+                            "difficulty": 2
+                        }
+                    ]
+                },
+                {
+                    "prompt": "part b) has no <input> sub parts, but has images",
+                    "answers": "\\d",
+                    "hints": ["A useful string when input #1 answer is wrong"],
+                    "difficulty": 3,
+                    "images": [
+                        {
+                            "a cool image": "<encoded PNG image string>"
+                        },
+                        {
+                            "type":"jpg",
+                            "another cool image": "<encoded JPG image string>",
+                        }
+                    ]
                 }
             ]
         }
