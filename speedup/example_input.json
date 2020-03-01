@@ -1,7 +1,7 @@
 {
-    "num_questions" : 1, 
-    "numbered_choice_count" : null,
-    "choice_numbers": [2, 4, 11],
+    "num_questions" : 5, 
+    "numbered_choice_count" : 5,
+    "choice_numbers": null,
     "include_none_of_the_above": true,
-    "shuffle_choices": true
+    "shuffle_choices": false
 }

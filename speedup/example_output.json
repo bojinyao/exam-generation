@@ -1,59 +1,40 @@
 {
     "multiple_choice": [
         {
-            "prompt": "If 25% of a program is serial, what's the max speedup we can get with infinite cores?",
-            "choices": [
-                20,
-                5,
-                50,
-                4,
-                "None of the above"
-            ],
-            "answers": 3
-        },
-        {
-            "prompt": "If 1% of a program is serial, what's the max speedup we can get with infinite cores?",
-            "choices": [
-                4,
-                50,
-                5,
-                "None of the above",
-                20
-            ],
-            "answers": 3
-        },
-        {
             "prompt": "If 2% of a program is serial, what's the max speedup we can get with infinite cores?",
             "choices": [
-                20,
-                4,
-                "None of the above",
                 5,
-                50
-            ],
-            "answers": 4
-        },
-        {
-            "prompt": "If 20% of a program is serial, what's the max speedup we can get with infinite cores?",
-            "choices": [
-                5,
-                "None of the above",
-                20,
-                50,
-                4
-            ],
-            "answers": 0
-        },
-        {
-            "prompt": "If 5% of a program is serial, what's the max speedup we can get with infinite cores?",
-            "choices": [
-                20,
-                5,
-                4,
-                50,
+                25,
+                100,
+                1,
+                2,
                 "None of the above"
             ],
-            "answers": 0
+            "answers": 5
+        },
+        {
+            "prompt": "If 4% of a program is serial, what's the max speedup we can get with infinite cores?",
+            "choices": [
+                5,
+                25,
+                100,
+                1,
+                2,
+                "None of the above"
+            ],
+            "answers": 1
+        },
+        {
+            "prompt": "If 100% of a program is serial, what's the max speedup we can get with infinite cores?",
+            "choices": [
+                5,
+                25,
+                100,
+                1,
+                2,
+                "None of the above"
+            ],
+            "answers": 3
         }
     ]
 }
