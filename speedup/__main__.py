@@ -22,10 +22,14 @@ def parse_arguments():
     return parser.parse_args(), parser
 
 # Equivalent to Main without the argparse
-def run(config):
+def run(config, *args, **kwargs):
+    fp = kwargs.get("file", None)
     try:
         constructed = speedUp(config).constructQuestions()
-        print(json.dumps(constructed, indent=4))
+        if fp is not None:
+            print(json.dumps(constructed, indent=4), file=fp)
+        else:
+            print(json.dumps(constructed, indent=4))
     except AssertionError as e:
         printErr(e)
 
@@ -46,12 +50,8 @@ def main():
         except json.JSONDecodeError:
             # Error goes to stderr
             printErr("Error parsing config file")
-        
-    try:
-        constructed = speedUp(config).constructQuestions()
-        print(json.dumps(constructed, indent=4), file=args.outfile)
-    except AssertionError as e:
-        printErr(e)
+
+    run(config, file=args.outfile)
 
 
 if __name__ == "__main__":

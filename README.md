@@ -124,7 +124,7 @@ def main(...):
     parseFlags()
     doSomeStuff()
     ...
-    run()
+    run(config)
 
 def parseFlags():
     ...
@@ -301,7 +301,7 @@ Note: this section is prong to changes. We will make our best effort to inform y
   - if your question type is `"fill_in_blanks"`, you should still provide a **list** of string(s) as a hint, where each hint corresponds to each `<input>` that a student would've answered incorrectly. In the case of a single `<input>`, this list will be of length 1. A useful hint would require some thought because it needs to generalize to infinitely answer. However, please keep your hint as short as possible.
 - `"difficulty"` -> `int` : you should mark each question's difficulty on an integer scale of `1` - `5` (inclusive), where `1` being easiest, and `5` being most difficult.
 - `"fill_in_blanks"` -> `list<obj>` : questions of type "fill in the blank". You should use `<input>` for place(s) where a single input is required. And if needed, you can chain multiple `<input>`s together to denote multiple required inputs. For example, a question might look like: "Abstraction includes both `<input>` and `<input>`", and the answer would be "generalization" and "detail removal". Although, questions that have long, word based answers are difficult to auto-grade in general...
-- `<input>` : each one of these inside your `"prompt"` is considered a user input, basically a blank to be filled. You can any number of these within a single `"prompt"`, and each one is considered a single input.
+- `<input>` : each one of these inside your `"prompt"` is considered a user input, basically a blank to be filled. You can have any number of these within a single `"prompt"`, and each one is considered a single input.
 
 Term clarifications:
 

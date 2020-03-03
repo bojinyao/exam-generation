@@ -5,6 +5,7 @@
 - [Change Log for Exam Generation Design Guide](#change-log-for-exam-generation-design-guide)
   - [Table of Contents](#table-of-contents)
   - [3/1/2020](#312020)
+  - [3/2/2020](#322020)
 
 ## 3/1/2020
 
@@ -19,3 +20,7 @@
 - Updated `JSON Output Example` Section in accommodation of above changes
 - Added `run(config : dict, *args, **kwargs)` function signature requirement.
 - Some small wording and typo fixes
+
+## 3/2/2020
+
+- Miscellaneous wording changes
