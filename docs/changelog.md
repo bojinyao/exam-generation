@@ -6,6 +6,7 @@
   - [Table of Contents](#table-of-contents)
   - [3/1/2020](#312020)
   - [3/2/2020](#322020)
+  - [3/6 2020](#36-2020)
 
 ## 3/1/2020
 
@@ -24,3 +25,9 @@
 ## 3/2/2020
 
 - Miscellaneous wording changes
+
+## 3/6 2020
+
+- Added `<img src="<title/caption of an image>">` to support the use of images in general.
+- Modified example in JSON output to demonstrate usage of `<img src="<title/caption of an image>">`
+- Modified some wording in `"images"`.

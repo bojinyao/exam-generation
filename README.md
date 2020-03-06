@@ -28,7 +28,7 @@ A general reference guide for creating exam generation projects
     - [Default Argument(s)](#default-arguments)
   - [Output Rules](#output-rules)
     - [JSON Output Format](#json-output-format)
-      - [JSON Output Example](#json-output-example)
+    - [JSON Output Example](#json-output-example)
 
 ## Change Log
 
@@ -292,8 +292,9 @@ Note: this section is prong to changes. We will make our best effort to inform y
   - if your question type is `"multiple_choice"`, if this value is a list, the question will default to question type that's "select all that apply". If this value is an integer, the question type will be "select the right answer". The number is the index to `"options"`, basically indicating which choice(s) is correct. If you're creating a question type that has multiple correct answers, but there is only 1 correct answer, you should create a list with only 1 number in it.
   - if your question type is `"fill_in_blanks"`, your `"answers"` should always be *regular expression* string! The regular expression string have to be **Ruby regular expressions** (<https://www.rubyguides.com/2015/06/ruby-regex/>). Similar to `"multiple_choice"`, if you have multiple `<input>`s, this should be a list of regular expression strings, where each regular expression string corresponds to each `<input>` in the same order. If you only have 1 `<input>`, it is okay to just use a single regular expression string.
 - `"images"` -> `list<obj>` : since we want to output everything to JSON, that includes images. We're using a list because JSON does not guarantee ordering of `(key, value)` pairs inside it's objects, and you might want your images ordered; luckily, it does preserve array/list ordering.
-  - `"<img title>"` -> `str` : each image object only requires 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, **default encoding will be PNG images!**
+  - `"<title of an image>"` -> `str` : each image object only requires 1 `(key, value)` pair. The key will automatically be treated as caption/title of the image it corresponds to. The image itself has to be encoded as a string so that it can be stored within our JSON object. To convert any image to string and back, check out this link: (<https://www.programcreek.com/2013/09/convert-image-to-string-in-python/>). Essentially, you will be using the standard library `based64` (<https://docs.python.org/3/library/base64.html>). For consistency, **default encoding will be PNG images!**
   - `"type"` -> `str` : for display purposes, the calling program might need to know the type of image you have. If you have something other than PNG, you should add the image type extension here, without the dot.
+- `<img src="<title/caption of an image>">`: if you want to display image(s) anywhere in your question, and as long as you have the `"images"` object storing the images within that question, you can use the familiar `<img>` html tag to indicate that you want to display an image; however, in the `src=` attribute, you should include ONLY the title of said image so that a given parser might understand which image you're referring to. You're welcome to set other attributes of the `<img>`, but **please refrain** from attributes like `size=`, `width=`, `height=` etc. because they'd violate the abstraction barrier.
 - `"hints"` -> `list<str>` : in the spirit of autoquiz, we need to be able to provide hint(s) if a student were to select the wrong question. Your program should output theses hints along with your answers.
   - if your question type is `"multiple_choice"`, you should output a list (equal length to `"options"`) of strings. Your hint for this question type should be none-trivial (saying "not right" is not enough!), it should be helpful to the student. Please avoid long paragraphs for this one, a sentence or two is more than enough.
     - if the question is "select the correct answer", each corresponding wrong answer should have a hint on why that choice is incorrect. You can simply say "correct", or an empty string, for the correct choice (this is more of a place holder for easier indexing).
@@ -308,7 +309,7 @@ Term clarifications:
 - "basic Latex": anything you can enclose using double `$$`. Since `$` also means "dollar", you must to enclose your mathematically expression with double `$$`. E.g. `$$\frac{dx}{dy} = \sum_{i=1}^n (3x^2 + 2x) \cdot x$$`
 - "JSON object": a JSON object looks very much like a python dictionary, but all key, value is represented as strings.
 
-#### JSON Output Example
+### JSON Output Example
 
 >If anything above or below seems confusing, or incorrect, you should message Max Yao directly on Slack
 
@@ -370,23 +371,27 @@ Below is an artificial example of a JSON output to give you a better idea of wha
             "difficulty": 5
         },
         {
-            "prompt":"Corporate needs you to the find differences between these 2 pictures.",
+            "prompt":"<img src=\"an_image\">Corporate needs you to the find differences between these 2 pictures.",
             "options": [
-                "first image", "second image"
+                "<img src=\"first_image\">", "<img src=\"second_image\"", "None of these"
             ],
             "hints": [
                 "hint for if image 1 is not selected",
-                "hint for if image 2 is selected"
+                "hint for if image 2 is selected",
+                "hint for if third option is selected"
             ],
             "answers": [1],
             "difficulty": 2,
             "images": [
                 {
-                    "first image": "<encoded PNG image string>"
+                    "an_image": "<encoded PNG image string>"
+                },
+                {
+                    "first_image": "<encoded PNG image string>"
                 },
                 {
                     "type":"jpg",
-                    "second image": "<encoded JPG image string>",
+                    "second_image": "<encoded JPG image string>",
                 }
             ]
         }
