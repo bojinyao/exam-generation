@@ -26,6 +26,7 @@ A general reference guide for creating exam generation projects
     - [Arguments and Flags](#arguments-and-flags)
     - [Configuration File](#configuration-file)
     - [Default Argument(s)](#default-arguments)
+  - [Error Reporting](#error-reporting)
   - [Output Rules](#output-rules)
     - [JSON Output Format](#json-output-format)
     - [JSON Output Example](#json-output-example)
@@ -251,6 +252,27 @@ Additionally, if you do have configuration file, you should outline what the opt
 To make your program more user friendly, you should consider default arguments. Very often, a user simply wants to start using the program without reading through configuration rules. As a result, you should put some thoughts into what the default values should be for your configurations. This will also be helpful if someone decides to not pass any arguments, or giving your program an empty configuration file, **your program should not crash if no configuration is given.**
 
 One of the ways to organize your configuration options is through a python dictionary or even a class. When you receive configuration(s), simply update corresponding `(key, value)` pairs. This way, default values should seem more natural and intuitive. Additionally, you will be able to pass this configuration to other classes or functions freely and succinctly.
+
+## Error Reporting
+
+It is likely that your program might need to report errors, either from illogical configuration, or exception during runtime, etc. Regardless of what the error is, or the cause of it, your program should not simply crash out! It is not unreasonable to fallback to the generic "catch-all" exception, in python3 it looks like:
+
+```python
+try:
+    ...
+except Exception as e:
+    ...
+    # handling the exception
+
+    import sys
+    print(f"your optional error message: {e}", file=sys.stderr)
+```
+
+Regardless how your program might handle the error itself, you should print/log to **standard error** instead of standard out.
+
+NOTE: standard out is defaulted to default program outputs, e.g. your JSON outputs. As a result, pleases do NOT print to standard out if your program is not configured to output to an output file. This is to avoid conflict between regular JSON outputs and your program messages.
+
+Optionally: if you have used some kind of a logger e.g. (<https://docs.python.org/3/howto/logging.html>) before, you *might* find it easier to use to handle debugging prints and error prints during development.
 
 ## Output Rules
 

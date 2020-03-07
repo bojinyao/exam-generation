@@ -31,3 +31,4 @@
 - Added `<img src="<title/caption of an image>">` to support the use of images in general.
 - Modified example in JSON output to demonstrate usage of `<img src="<title/caption of an image>">`
 - Modified some wording in `"images"`.
+- Addd Error Reporting section
