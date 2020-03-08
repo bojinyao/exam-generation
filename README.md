@@ -86,7 +86,9 @@ Lastly, you will need to place the main logic (entry point) within a function ca
 
 #### run(config)
 
-To provide a consistent API across all programs, you're required to define a python **function**, not method, with the signature `run(config : dict, *args, **kwargs)`, where the **only** required input parameter is a dictionary, and **only** a dictionary will be passed to it when called outside of `"__main__"`. You should place this **function** inside your `__main__.py`
+To provide a consistent API across all programs, you're required to define a python **function**, not method, with the signature `run(config : dict, *args, **kwargs) -> int`, where the **only** required input parameter is a dictionary, and **only** a dictionary will be passed to it when called outside of `"__main__"`. You should place this **function** inside your `__main__.py`
+
+This function should return a `0` (zero) if no error ever occurred during its execution, and should return a none-zero, positive integer if anything went wrong. It is okay to simply return a `1` (one) to indicate that something went wrong. Optionally, you can return different numbers to indicate different types of error; however, what the none-zero number means should be outlined in your documentation!
 
 This function will be called by default if your python module is imported like a library, and **only** a dictionary of your program's configurations will be passed to it. Your program do not have to use this function in its operations, but when this function is called, the program should function the same way!
 
@@ -255,14 +257,15 @@ One of the ways to organize your configuration options is through a python dicti
 
 ## Error Reporting
 
-It is likely that your program might need to report errors, either from illogical configuration, or exception during runtime, etc. Regardless of what the error is, or the cause of it, your program should not simply crash out! It is not unreasonable to fallback to the generic "catch-all" exception, in python3 it looks like:
+It is likely that your program might need to report errors, either from illogical configuration, or exception during runtime, etc. Regardless of what the error is, or the cause of it, your program should not simply crash out! It is not unreasonable to fallback to the generic "catch-all" exception. You can also be more specific of the type of the exception your program might have, the point is to avoid crashing the calling program altogether.
+
+In python3 it looks like:
 
 ```python
 try:
     ...
 except Exception as e:
-    ...
-    # handling the exception
+    ... # handling the exception
 
     import sys
     print(f"your optional error message: {e}", file=sys.stderr)
@@ -273,6 +276,43 @@ Regardless how your program might handle the error itself, you should print/log 
 NOTE: standard out is defaulted to default program outputs, e.g. your JSON outputs. As a result, pleases do NOT print to standard out if your program is not configured to output to an output file. This is to avoid conflict between regular JSON outputs and your program messages.
 
 Optionally: if you have used some kind of a logger e.g. (<https://docs.python.org/3/howto/logging.html>) before, you *might* find it easier to use to handle debugging prints and error prints during development.
+
+To recap, your `__main__.py` might now look like:
+
+```python
+def run(config, *args, **kwargs):
+    try:
+        ... # doing some parsing etc.
+        ... # some additional logic etc.
+
+        outputJSON()
+        return 0
+    except Exception as e:
+        ... # handle the error
+
+        import sys
+        print(f"your optional error message: {e}", file=sys.stderr)
+        return 1 # optionally, other >0 integer you might define
+
+def main(...):
+    parseFlags()
+    doSomeStuff()
+    ...
+    run(config)
+
+def parseFlags():
+    ...
+
+def doSomeStuff():
+    ...
+
+def outputJSON():
+    ...
+
+if __name__ == "__main__":
+    main(...)
+
+```
 
 ## Output Rules
 
@@ -298,7 +338,7 @@ import json
 - use `json.loads()` and `json.dumps()` to decode and encode your JSON objects. You can also use `json.load()` or `json.dump()` if you know what you're doing. You likely will not need to use `json.loads()` or `json.load()` since your program likely won't need to consume JSON.
 - output your JSON to standard out *by default* ! Normally, you can just call `print(...)`.
   - you can output directly to some json file, like `output.json`, but this should only be enabled by argument or flag! Even then, your argument should take in a path, rather than simply writing to where the program is called <-- if this doesn't make sense to you, ask!
-  - the idea behind this is to give called program the right to name and decide on where and how to create the output file(s).
+  - the idea behind this is to give calling program the right to name and decide on where and how to create the output file(s).
   - it is very easy for the calling program to capture/redirect your program's standard out.
 
 >Note Keys in key/value pairs of JSON are always of the type `str`. When a dictionary is converted into JSON, all the keys of the dictionary are coerced to strings. As a result of this, if a dictionary is converted into JSON and then back into a dictionary, the dictionary may not equal the original one. That is, `loads(dumps(x)) != x` if `x` has non-string keys.

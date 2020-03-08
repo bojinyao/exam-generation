@@ -7,6 +7,7 @@
   - [3/1/2020](#312020)
   - [3/2/2020](#322020)
   - [3/6 2020](#36-2020)
+  - [3/7 2020](#37-2020)
 
 ## 3/1/2020
 
@@ -32,3 +33,9 @@
 - Modified example in JSON output to demonstrate usage of `<img src="<title/caption of an image>">`
 - Modified some wording in `"images"`.
 - Addd Error Reporting section
+
+## 3/7 2020
+
+- Added return type for the `run()` function, now the function signature looks like: `run(config : dict, *args, **kwargs) -> int`
+- Added another example of what the `__main__.py` might look like.
+- Miscellaneous wording fixes.
